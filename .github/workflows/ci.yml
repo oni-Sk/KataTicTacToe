@@ -37,7 +37,7 @@ jobs:
         run: docker run onisk/katatictactoe:linttest deno lint
 
       - name: Run unit tests
-        run: docker run --rm onisk/katatictactoe:linttest deno test
+        run: docker run --rm onisk/katatictactoe:linttest deno test --allow-env
         
       - name: Push to DockerHub
         uses: docker/build-push-action@v2
