@@ -1,34 +1,44 @@
-export enum Field {NOT_TAKEN, PLAYER1, PLAYER2}
-export enum Turn {PLAYER1, PLAYER2}
+import { WinCondHandler, DrawHandler, WinHandler } from "./winCondHandler.ts"
+
+export enum Player {NONE, P1, P2}
 
 export class Game {
 
-    fields : number[];
-    currentPlayer : number;
+    fields: number[];
+    currentPlayer: number;
 
     constructor() {
 
         this.fields = new Array(9);
-        this.fields.fill(Field.NOT_TAKEN);
+        this.fields.fill(Player.NONE);
 
-        this.currentPlayer = Turn.PLAYER1;
+        this.currentPlayer = Player.P1;
 
     }
     
-    getFields() : Field[] {
+    getFields() : Player[] {
         return this.fields;
     }
 
-    getCurrentPlayer() : Turn {
+    getField(row: number, column: number) : Player {
+        return this.fields[gridCoordsToIndex(row, column)];
+
+      function gridCoordsToIndex(row: number, column: number) : number {
+        return (row - 1) * 3 + (column - 1);
+      }
+    }
+
+    getCurrentPlayer() : Player {
         return this.currentPlayer;
     }
 
     isNotOver() : boolean {
 
-        if( ! this.fields.includes(0) )
-            return false;
-        return true;
-
+        const winCondHandler = new WinHandler(
+                                new DrawHandler(
+                                new WinCondHandler()));
+        
+        return ! winCondHandler.handle(this);
     }
 
 }
